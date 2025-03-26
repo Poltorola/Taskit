@@ -1,0 +1,129 @@
+h1{
+    color: #2D971F;
+    text-align: center;
+    font-style: normal;
+    line-height: 120%;
+    letter-spacing: -0.96px;
+}
+
+body{
+    border-radius: 10px; 
+    background : rgba(207, 254, 160, 0.40);
+}
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Navbar Styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+/* Left-aligned logo */
+.logo {
+    color: #007BFF;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.logo:hover {
+    text-decoration: underline;
+}
+
+
+/* Right-aligned authentication links */
+.auth-links {
+    font-size: 16px;
+}
+
+.auth-links a {
+    color: #007BFF;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.button {
+    opacity: 0.5;
+    background-color: #2D971F;
+    border-color: #2D971F;
+    border-radius: 8px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+  }
+
+.button:hover {
+    opacity: 1;
+}
+  
+  
+/* Task card */
+
+#cardContainer{
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    background-color: #aaf08a;
+    border-radius: 20px;
+    padding: 10px; /* Space inside */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    text-align: center;
+    align-items: center;
+    border: 3px solid #22910c;
+}
+
+input {
+    width: 90%; /* Input width */
+    padding: 10px;
+    border-radius: 10px; /* Rounded input fields */
+    border: 1.5px solid #008000; /* Dark green border */
+    font-size: 16px;
+}
+
+textarea {
+    width: 90%; /* Input width */
+    padding: 10px;
+    border-radius: 10px; /* Rounded input fields */
+    border: 1.5px solid #008000; /* Dark green border */
+    font-size: 16px;
+}
+
+.is_done {
+    position: relative; /* Делаем div относительным для ::after */
+}
+
+.is_done::after {
+    content: "";
+    position: absolute;
+    top: -5;
+    left: -5;
+    width: 105%;
+    height: 105%;
+    background: rgba(255, 255, 255, 0.5); /* Полупрозрачный белый фон */
+    pointer-events: none; /* Чтобы фон не блокировал клики */
+    z-index: 1; /* Делаем слой выше остальных элементов */
+}

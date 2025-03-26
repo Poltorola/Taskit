@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Taskit</title>
+    <link href={{url_for('static', filename='styles.css')}} rel="stylesheet">
+</head>
+
+<header class="navbar">
+    <a href="https://en.wikipedia.org/wiki/Cat" class="logo">Creators</a>
+    <div class="auth-links">
+        <a href="#" class="sign-in">Sign in</a> | 
+        <a href="#" class="sign-up">Sign up</a>
+    </div>
+</header>
+
+    <h1>Taskit</h1>
+    <p style="text-align:center; color: #538623;">Simple To-Do List generator</p>
+<br>
+
+<div style="text-align: center;">
+    <button class="button" id="Button">+</button>
+</div>
+
+<div id="cardContainer"></div>
+
+    <script>
+        let cards = [];
+        const FILE_PATH = "tasks.json";
+
+        function toggleCard(id, is_done){
+            const card =  document.getElementById(`card_${id}`);
+            if (is_done){
+                card.className = 'card is_done';
+            } else {
+                card.className = 'card';
+            }
+            
+        }
+
+        async function loadCards() {
+            try {
+                // тут вместо хардкода url нужно чтобы flask сам подставлял что-то хз как
+                const response = await fetch('/cards');
+                if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+                }
+
+                const json = await response.json();
+                console.log(json);
+                json.forEach(element => {
+                // console.log(element.id, element.name, element.desc);
+                createCardElement(element.id, element.is_done, element.name, element.desc);
+                });
+                cards = json;
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        function debounce(func, delay) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        function updateCardData(id, is_done, name, desc){
+            const index = cards.findIndex(c => c.id == id);
+            if (index !== -1){
+                cards[index].is_done = is_done;
+                cards[index].name = name;
+                cards[index].desc = desc;
+            }
+            debounced_saveCards();
+        }
+
+        function saveCards(){
+            // тут вместо хардкода url нужно чтобы flask сам подставлял что-то хз как
+            fetch('/cards', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(cards)
+            });
+        }
+
+        const debounced_saveCards = debounce(saveCards, 5000);
+
+        function createCardElement(id, is_done=false, name='', desc=''){
+            const card = document.createElement('div');
+            if (is_done){
+                card.className = 'card is_done';
+            } else {
+                card.className = 'card';
+            }
+
+            card.id = `card_${id}`;
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = is_done;
+
+            const input = document.createElement('input');
+            input.type = 'text'
+            input.value = name;
+
+            const textarea = document.createElement('textarea');
+            textarea.rows = 3;
+            textarea.value = desc;
+            
+            checkbox.addEventListener('change', () => {
+                toggleCard(id, checkbox.checked);
+                updateCardData(id, checkbox.value, input.value, textarea.value);
+            });
+            input.addEventListener('input', () => updateCardData(id, checkbox.value, input.value, textarea.value));
+            textarea.addEventListener('input', () => updateCardData(id, checkbox.value, input.value, textarea.value))
+
+            card.appendChild(checkbox);
+            card.appendChild(input);
+            card.appendChild(textarea);
+            document.getElementById("cardContainer").appendChild(card);
+        }
+
+        document.getElementById("Button").addEventListener("click", function() {
+            const id = cards.length + 1;
+            createCardElement(id);
+            cards.push({id, name: '', desc: ''});
+        });
+
+        loadCards();
+    </script>
+
+</body>
+</html>
