@@ -101,6 +101,18 @@
             debounced_saveCards();
         }
 
+        function deleteCard(id){
+            const index = cards.findIndex(c => c.id == id);
+            if (index !== -1){
+                cards.splice(index, 1);
+                const element = document.getElementById(`card_${id}`);
+                if(element){
+                    element.remove()
+                }
+            }
+            saveCards();
+        }
+
         function saveCards(){
             // тут вместо хардкода url нужно чтобы flask сам подставлял что-то хз как
             fetch('/cards', {
@@ -126,6 +138,10 @@
             checkbox.type = 'checkbox';
             checkbox.checked = is_done;
 
+            const btn = document.createElement('button');
+            btn.textContent = 'X'
+            btn.addEventListener('click', () => deleteCard(id));
+
             const input = document.createElement('input');
             input.type = 'text'
             input.value = name;
@@ -144,6 +160,7 @@
             textarea.addEventListener('input', () => updateCardData(id, checkbox.value, input.value, textarea.value))
 
             card.appendChild(checkbox);
+            card.appendChild(btn);
             card.appendChild(input);
             card.appendChild(textarea);
             document.getElementById("cardContainer").appendChild(card);
