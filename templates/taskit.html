@@ -110,7 +110,7 @@
             });
         }
 
-        const debounced_saveCards = debounce(saveCards, 5000);
+        const debounced_saveCards = debounce(saveCards, 1000);
 
         function createCardElement(id, is_done=false, name='', desc=''){
             const card = document.createElement('div');
@@ -129,10 +129,12 @@
             const input = document.createElement('input');
             input.type = 'text'
             input.value = name;
+            input.maxLength = 200;
 
             const textarea = document.createElement('textarea');
             textarea.rows = 3;
             textarea.value = desc;
+            textarea.maxLength = 500;
             
             checkbox.addEventListener('change', () => {
                 toggleCard(id, checkbox.checked);
