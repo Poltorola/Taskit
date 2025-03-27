@@ -5,12 +5,37 @@
     <title>Taskit</title>
     <link href={{url_for('static', filename='styles.css')}} rel="stylesheet">
 </head>
+<body>
 
-<header class="navbar">
+<header class="navbar">     
     <a href="https://en.wikipedia.org/wiki/Cat" class="logo">Creators</a>
     <div class="auth-links">
-        <a href="#" class="sign-in">Sign in</a> | 
-        <a href="#" class="sign-up">Sign up</a>
+        <a href="/login" class="sign-in">Sign in</a> | 
+        <a href="/login" class="sign-up">Sign up</a>
+        <!-- <div class="container">
+            <h2>Sign In</h2>
+            <form id="loginForm">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Sign In</button>
+            </form>
+            <p>Don't have an account? <a href="#">Sign Up</a></p>
+        </div> -->
+        <!-- <script>    
+            document.getElementById("loginForm").addEventListener("submit", function(event) { // sign in form on click
+                event.preventDefault(); // prevent form submission
+
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+
+                if (email === "test@example.com" && password === "123456") {
+                    alert("Login successful!");
+                    window.location.href = "dashboard.html"; // redirect after login
+                } else {
+                    alert("Invalid email or password!");
+                }
+            });
+        </script> -->
     </div>
 </header>
 
@@ -28,7 +53,7 @@
         let cards = [];
         const FILE_PATH = "tasks.json";
 
-        function toggleCard(id, is_done){
+        function toggleCard(id, is_done){                       //changes checked cards
             const card =  document.getElementById(`card_${id}`);
             if (is_done){
                 card.className = 'card is_done';
@@ -122,10 +147,12 @@
             document.getElementById("cardContainer").appendChild(card);
         }
 
-        document.getElementById("Button").addEventListener("click", function() {
+        document.getElementById("Button").addEventListener("click", function() { // adds card on button "+" click
             const id = cards.length + 1;
+            if (id < 7) {                   // to prevent spam, TODO: replace with authentification
             createCardElement(id);
             cards.push({id, name: '', desc: ''});
+            }
         });
 
         loadCards();

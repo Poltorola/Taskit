@@ -11,7 +11,7 @@ app = Flask("taskit")
 # а если пользоваетль не авторизован, то редиректила его на страницу 
 # /login
 # и при сохранении json тоже нужно проверять, что пользователь авторизован
-@app.route('/')
+@app.route('/taskit')
 def home():
     return render_template('taskit.html')
 
@@ -46,7 +46,7 @@ def cards():
 def login():
     if request.method == 'GET':
         # 4) отдать форму ввода логина и пароля
-        return make_response('', 200)
+        return render_template('login.html')
     if request.method == 'POST':
         # 5) проверить логин и пароль
         return make_response('', 200)
