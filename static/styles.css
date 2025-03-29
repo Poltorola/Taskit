@@ -1,9 +1,26 @@
+/*  Taskit CSS  */
+
+
+/* Bid, mid, small text */
 h1{
     color: #2D971F;
     text-align: center;
     font-style: normal;
     line-height: 120%;
     letter-spacing: -0.96px;
+}
+
+h2{
+    color: #2D971F;
+    text-align: center;
+    font-style: normal;
+    line-height: 100%;
+    letter-spacing: -0.96px;
+    padding: 10px;
+}
+
+p{
+   color: #28691c;
 }
 
 body{
@@ -53,7 +70,40 @@ body{
     text-decoration: underline;
 }
 
+/* ----------- CSS For Login page ------------ */
 
+/* Input Form */
+
+.inputForm {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 350px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    justify-self: center;
+}
+
+/* Sign In */
+
+#SignInContainer {
+    display: flex;
+    flex-direction: column;
+    background:  #aaf08a;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    text-align: center;
+    border: 3px solid #22910c;
+}
+
+
+/* ---------------- CSS For Cards page ---------------- */
+
+/* Button */
 
 .button {
     opacity: 0.5;
@@ -66,10 +116,24 @@ body{
     text-decoration: none;
     display: inline-block;
     font-size: 30px;
-  }
+}
 
 .button:hover {
     opacity: 1;
+}
+
+.button_small {
+    opacity: 0.5;
+    background-color: #2D971F;
+    border-color: #2D971F;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 10px;
+    margin: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
 }
   
   
@@ -98,24 +162,26 @@ body{
     border: 3px solid #22910c;
 }
 
-input {
-    width: 90%; /* Input width */
+input {                    /* task title */
+    width: 90%;
     padding: 10px;
-    border-radius: 10px; /* Rounded input fields */
-    border: 1.5px solid #008000; /* Dark green border */
+    border-radius: 10px; 
+    border: 1.5px solid #008000;
     font-size: 16px;
 }
 
-textarea {
-    width: 90%; /* Input width */
+textarea {              /* task description */
+    width: 90%;
     padding: 10px;
-    border-radius: 10px; /* Rounded input fields */
-    border: 1.5px solid #008000; /* Dark green border */
+    border-radius: 10px;
+    border: 1.5px solid #008000;
     font-size: 16px;
 }
+
+/* Checkbox ??? who */
 
 .is_done {
-    position: relative; /* Делаем div относительным для ::after */
+    position: relative; /* Делаем div относительным для ::after ??? */
 }
 
 .is_done::after {
@@ -123,8 +189,8 @@ textarea {
     position: absolute;
     top: -5;
     left: -5;
-    width: 105%;
-    height: 105%;
+    width: 100%;
+    height: 100%;
     background: rgba(255, 255, 255, 0.5); /* Полупрозрачный белый фон */
     pointer-events: none; /* Чтобы фон не блокировал клики */
     z-index: 1; /* Делаем слой выше остальных элементов */
