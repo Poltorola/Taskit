@@ -156,8 +156,8 @@
                 toggleCard(id, checkbox.checked);
                 updateCardData(id, checkbox.value, input.value, textarea.value);
             });
-            input.addEventListener('input', () => updateCardData(id, checkbox.value, input.value, textarea.value));
-            textarea.addEventListener('input', () => updateCardData(id, checkbox.value, input.value, textarea.value))
+            input.addEventListener('input', () => updateCardData(id, checkbox.checked, input.value, textarea.value));
+            textarea.addEventListener('input', () => updateCardData(id, checkbox.checked, input.value, textarea.value))
 
             card.appendChild(checkbox);
             card.appendChild(btn);
