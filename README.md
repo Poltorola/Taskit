@@ -34,7 +34,30 @@ sudo systemctl enable mongod
 
 ## create .env file
 
+create a flask secret key
+```python
+import secrets
+
+secret_key = secrets.token_hex(32)  # 64 символа, 256 бит
+print(secret_key)
 ```
+
+create a mongodb strong password
+```python
+
+from random import choice
+
+alphabet = 'qwertyuiopasdfghjklzxcvbnm1234567890!@#$%^&*()-=_+[]{};:<>,./?|~'
+alphabet += alphabet.upper()
+
+print(''.join([choice(alphabet) for _ in range(20)]))
+
+```
+
+write secret key and password into .env file
+```conf
+FLASK_SECRET_KEY=<secret_key_generated_before>
+MONGO_PASSWORD=<password_generated_before>
 ```
 
 ## create user and database in mongo
@@ -50,7 +73,7 @@ use admin
 db.createUser(
     {
         user: "backend",
-        pwd: "<password>",
+        pwd: "<password_generated_before>",
         roles: [{role: "readWrite", db: "taskit_app"}]
     }
 )
@@ -58,7 +81,7 @@ db.createUser(
 db.createUser(
     {
         user: "admin",
-        pwd: "<password>",
+        pwd: "<other_password>",
         roles: [{role: "root", db: "admin"}]
     }
 )
