@@ -6,7 +6,7 @@ Simple To-Do List generator (web app practice)
 ## clone git repo
 
 ```bash
-
+git clone https://github.com/Poltorola/Taskit.git
 ```
 
 ## preparing virtual env with dependencies
