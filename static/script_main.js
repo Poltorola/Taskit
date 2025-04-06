@@ -1,4 +1,5 @@
 
+
 // --------------------------------- JS for Main page -------------------------------
 
 let cards = [];
@@ -211,5 +212,3 @@ function moveCard(id, direction){
 
 loadCards();
 
-
-/*DEBUG NOTES*/

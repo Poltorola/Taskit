@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .vscode*/*
 my_file.json
 tempCodeRunnerFile.py
@@ -9,3 +10,15 @@ pyvenv.cfg
 install_and_setup*
 .env
 share*
+=======
+.vscode*/*
+my_file.json
+tempCodeRunnerFile.py
+__pycache__/*
+bin/*
+lib/*
+lib64*
+pyvenv.cfg
+install_and_setup*
+.env
+>>>>>>> 560347149a73470c7a364277d95ca05008c5d080
