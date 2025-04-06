@@ -8,3 +8,4 @@ lib64*
 pyvenv.cfg
 install_and_setup*
 .env
+share*
