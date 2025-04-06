@@ -62,12 +62,18 @@ MONGO_PASSWORD=<password_generated_before>
 
 ## create user and database in mongo
 
+connecting to the database
 ```bash
 mongosh
 ```
 
+creating database for application
 ```mongosh
 use taskit_app
+```
+
+creating admin and backend users
+```mongosh
 use admin
 
 db.createUser(
@@ -85,11 +91,28 @@ db.createUser(
         roles: [{role: "root", db: "admin"}]
     }
 )
+```
 
+creating collections 
+```mongosh
 use taskit_app
 db.createCollection("users", {capped: true, size: 104857600, max: 100});
 db.createCollection("tasks", {capped: true, size: 104857600, max: 100});
 ```
 
+manually creating a user account
+```python
+
+from mongo_taskit_api import save_user
+import hashlib
+import dotenv
+
+load_dotenv()
+
+password = '<really strong password>'
+
+save_user('test@example.com', hashlib.sha256(password.encode()).hexdigest())
+
+```
 
 

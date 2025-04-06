@@ -22,7 +22,6 @@ from mongo_taskit_api import (  # methods to work with NoSQL database (mongo)
 )
 
 load_dotenv()
-FILE_NAME = 'my_file.json'  # to store cards data
 
 app = Flask("taskit")                                                       #http://127.0.0.1:5000
 app.config['SECRET_KEY'] = os.getenv("FLASK_SECRET_KEY")    # TODO add a secret code generation
