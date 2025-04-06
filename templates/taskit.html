@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
     <meta name="viewport" content="width=device-width, 
@@ -50,56 +49,3 @@
 </body>
 
 </html>
-=======
-<!DOCTYPE html>
-<html>
-    <meta name="viewport" content="width=device-width, 
-    initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<head>
-    <meta charset="UTF-8">
-    <title>Taskit</title>
-    <link href={{url_for('static', filename='styles.css')}} rel="stylesheet">
-</head>
-
-<body>
-
-    <div>       <!-- Flash messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <p class="{{ category }}">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </div>
-
-    <header class="navbar">     <!-- Authorisation bar -->
-        <a href="https://github.com/Poltorola/Taskit" class="logo">Creators</a> 
-        <div class="auth-links">
-            {% if 'user' in session %}
-                <a href="/logout" class="log-out">Log out</a>
-                {% else %}
-                <a href="/login" class="sign-in">Sign in </a> 
-                | 
-                <a href="/login" class="sign-up">Sign up</a>
-                <p>Sign in to save your tasks!</p>
-            {% endif %}
-        </div>
-    </header>
-
-
-    <h1>Taskit</h1>     <!-- Name -->
-    <p style="text-align:center; color: #538623;">Simple To-Do List generator</p>
-    <br>
-
-    <div style="text-align: center;">
-        <button class="button" id="Button">+</button> <!--Button to add new tasks-->
-    </div>
-
-    <div id="cardContainer"></div>  <!--Card is a placeholder for tasks-->
-
-    <script src={{url_for('static', filename='script_main.js')}}></script>
-</body>
-
-</html>
->>>>>>> 560347149a73470c7a364277d95ca05008c5d080
