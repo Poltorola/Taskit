@@ -7,27 +7,44 @@
 </head>
 <body>
 
-<header class="navbar">     
-    <a href="https://en.wikipedia.org/wiki/Cat" class="logo">Creators</a> <!--TODO add my github-->
-    <div class="auth-links">
-        <a href="#" class="sign-in">Sign in</a> | 
-        <a href="#" class="sign-up">Sign up</a>
+    <div>       <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     </div>
-</header>
 
-<div class="inputForm">
-    <div id="SignInContainer">           <!--Sign In-->
-        <h2>Sign In</h2>
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button class="button_small" type="submit">Sign In</button>
-        </form>
+    <header class="navbar">     <!-- Authorisation bar -->
+        <a href="https://github.com/Poltorola" class="logo">Creators</a> 
+        <div class="auth-links">
+            <a href="#" class="sign-in">Sign in</a> | 
+            <a href="#" class="sign-up">Sign up</a>
+        </div>
+    </header>
 
-        <p>Don't have an account? <a href="#">Sign Up</a></p>
+    <div class="inputForm">
+        <div id="SignInContainer">           <!--Sign In-->
+            <h2>Sign In</h2>
+            <form method="POST">
+                {{ form.hidden_tag() }}  {# CSRF Token #}
+                <p>
+                    {{ form.email.label }}<br>
+                    {{ form.email() }}
+                </p>
+                <p>
+                    {{ form.password.label }}<br>
+                    {{ form.password() }}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+
+            <p>Don't have an account? <a href="#">Sign Up</a></p>
+        </div>
     </div>
-</div>
 
-<script src="script_login.js"></script>
+    <script src="script_login.js"></script>
 </body>
 </html>

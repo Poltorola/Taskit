@@ -4,7 +4,8 @@
 let cards = [];
 const FILE_PATH = "tasks.json";
 
-function toggleCard(id, is_done){                       // makes checked cards pale
+
+function toggleCard(id, is_done){                       // makes checked taskss pale
     const card =  document.getElementById(`card_${id}`);
     if (is_done){
         card.className = 'card is_done';
@@ -13,7 +14,8 @@ function toggleCard(id, is_done){                       // makes checked cards p
     }
 }
 
-function cardID(cards){                 // TODO change id calculation
+
+function cardID(cards){       // calculates task's id
     if (cards.length == 0){
         return 1;
     }
@@ -22,9 +24,9 @@ function cardID(cards){                 // TODO change id calculation
     return newID;
 }
 
-async function loadCards() {        // fetches existing cards from server in form of json
+
+async function loadCards() {        // fetches existing tasks from server in form of json
     try {
-        // тут вместо хардкода url нужно чтобы flask сам подставлял что-то хз как
         const response = await fetch('/cards');
         if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
@@ -42,6 +44,7 @@ async function loadCards() {        // fetches existing cards from server in for
     }
 }
 
+
 function debounce(func, delay) {  // to prevent json spam with each new typed character
     let timeout;
     return function(...args) {
@@ -50,7 +53,8 @@ function debounce(func, delay) {  // to prevent json spam with each new typed ch
     };
 }
 
-function updateCardData(id, is_done, name, desc){   // task changes
+
+function updateCardData(id, is_done, name, desc){   // registers task's changes
     const index = cards.findIndex(c => c.id == id);
     if (index !== -1){
         cards[index].is_done = is_done;
@@ -60,7 +64,25 @@ function updateCardData(id, is_done, name, desc){   // task changes
     debounced_saveCards();
 }
 
-function deleteCard(id){                            // deleting cards on 'X' click
+
+function rearrangeCards(){
+    console.log("rearrangeCards");
+    let n = 0;
+    cards.forEach(element => {  // to update all tasks' ids and to change their order, we delete and recreate each card
+        n += 1;
+        // if(element.id === n){
+        //     return;
+        // }
+        dom_card = document.getElementById(`card_${element.id}`);
+        element.id = n;
+        dom_card.remove();
+        createCardElement(element.id, element.is_done, element.name, element.desc);
+    });
+    saveCards();
+}
+
+
+function deleteCard(id){                            // deleting tasks on 'X' click
     const index = cards.findIndex(c => c.id == id);
     if (index !== -1){
         cards.splice(index, 1);
@@ -69,27 +91,13 @@ function deleteCard(id){                            // deleting cards on 'X' cli
             element.remove()
         }
     }
-    let n = 0;
-    // здесь, чтобы менять порядок всех элементов нужно по сути удалять все карты и создавать заново
-    cards.forEach(element => {
-        n += 1;
-        if(element.id === n){
-            return;
-        }
-        dom_card = document.getElementById(`card_${element.id}`);
-        element.id = n;
-        dom_card.remove();
-        createCardElement(element.id, element.is_done, element.name, element.desc);
-        // checkbox = dom_card.getElementByClassName('task_status');
-        // btn = dom_card.getElementByClassName('remove_task_btn');
-        // dom_card.id = `card_${n}`;
-        
-    });
-    saveCards();
+    
+    // console.log(cards);
+    rearrangeCards();
 }
 
+
 function saveCards(){
-    // тут вместо хардкода url нужно чтобы flask сам подставлял что-то хз как
     fetch('/cards', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -98,6 +106,7 @@ function saveCards(){
 }
 
 const debounced_saveCards = debounce(saveCards, 1000);  // 1 sec data update delay 
+
 
 function createCardElement(id, is_done=false, name='', desc=''){    // creating card
     const card = document.createElement('div');
@@ -111,6 +120,7 @@ function createCardElement(id, is_done=false, name='', desc=''){    // creating 
 
     const checkbox = document.createElement('input');   // checkbox TODO add CSS styles???
     checkbox.type = 'checkbox';
+    checkbox.id = 'task_checkbox';
     checkbox.className = 'task_status';
     checkbox.checked = is_done;
 
@@ -119,12 +129,22 @@ function createCardElement(id, is_done=false, name='', desc=''){    // creating 
     btn.className = 'remove_card_btn';
     btn.addEventListener('click', () => deleteCard(id));
 
+    const up = document.createElement('button');        // move task up
+    up.textContent = '▲';
+    up.className = 'up_task_btn';
+    up.addEventListener('click', () => moveCard(id, 'up'));
+
+    const down = document.createElement('button');      // move task down
+    down.textContent = '▼';
+    down.className = 'down_task_btn';
+    down.addEventListener('click', () => moveCard(id, 'down'));
+
     const input = document.createElement('input');  // task title field
     input.type = 'text'
     input.value = name;
     input.maxLength = 200;
 
-    const textarea = document.createElement('textarea'); //task description field
+    const textarea = document.createElement('textarea'); // task description field
     textarea.rows = 3;
     textarea.value = desc;
     textarea.maxLength = 500;
@@ -140,26 +160,56 @@ function createCardElement(id, is_done=false, name='', desc=''){    // creating 
     card.appendChild(btn);
     card.appendChild(input);
     card.appendChild(textarea);
+    card.appendChild(up);
+    card.appendChild(down);
     document.getElementById("cardContainer").appendChild(card);
 }
+
 
 document.getElementById("Button").addEventListener("click", function() { // adds card on button "+" click
     if (cards.length > 7){
         return;
     }
-    const id =  cardID(cards);
-                      // to prevent spam, TODO: replace with authentification
+    const id = cardID(cards);
     createCardElement(id);
-    cards.push({id, name: '', desc: ''});
+    cards.push({id, name: '', desc: '', is_done: false});
     
 });
+
+
+function moveCard(id, direction){
+    const dom_card =  document.getElementById(`card_${id}`); // card from DOM
+    index = cards.findIndex(c => c.id == id);                // card index in local array
+
+    if (dom_card.className == 'card_is_done'){       // move checked tasks to the bottom
+        cards.push(cards.splice(index, 1));          // delete task from its place, and paste it in the end
+
+    } else if (direction == 'down'){                           // move task down
+        if (id >= cards.length){                                //next_card.className == 'card_is_done'
+            return;
+        }
+        if (cards[index].is_done == false && cards[index + 1].is_done == true){
+            return;
+        }
+        next_card = document.getElementById(`card_${id + 1}`);  // next task is_done, can't move down
+        [cards[index], cards[index+1]] = [cards[index+1], cards[index]];
+        
+    } else if (direction == 'up'){            // move task up
+        if (id == 1){                         // first task, can't move up
+            return;
+        }
+        if (cards[index - 1].is_done == false && cards[index].is_done == true){
+            return;
+        }
+        [cards[index], cards[index-1]] = [cards[index-1], cards[index]];
+    }
+
+    // Now changing our html
+    rearrangeCards();
+}
+
 
 loadCards();
 
 
 /*DEBUG NOTES*/
-
-    /*если создать три карты, удалить карту 2 и создать новую карту
-    вторая карта всё ещё будет иметь id 3, как и только что созданная
-    в итоге чек и делит действуют на предыдущую карту с id 3 вместо новой
-    : обновлять данные об айдишниках в json*/
